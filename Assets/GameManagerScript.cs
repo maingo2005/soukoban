@@ -8,7 +8,7 @@ public class GameManagerScript : MonoBehaviour
     public GameObject boxPrefab;
     /// <summary>荷物を格納する場所のプレハブ</summary>
     public GameObject storePrefab;
-    /// <summary>クリアーしたことを示すテキストのGameObject</summary>
+    /// <summary>クリアーしたことを示すテキストの GameObject</summary>
     public GameObject clearText;
     int[,] map; // マップの元データ（数字）
     GameObject[,] field;    // map を元にしたオブジェクトの格納庫
@@ -73,10 +73,11 @@ public class GameManagerScript : MonoBehaviour
         // オブジェクトのシーン上の座標を動かす
         //field[moveTo.y, moveTo.x].transform.position =
         //    new Vector3(moveTo.x, -1 * moveTo.y, 0);
-        //プレイヤーor箱のオブジェクトから、Moveコンポーネントをと
+        // プレイヤーor箱のオブジェクトから、Moveコンポーネントをとってくる
         Move move = field[moveTo.y, moveTo.x].GetComponent<Move>();
-        //Moveコンポーネントに対して、動けと命令する
+        // Moveコンポーネントに対して、動けと命令する
         move.MoveTo(new Vector3(moveTo.x, -1 * moveTo.y, 0));
+
         return true;
     }
 
@@ -105,11 +106,12 @@ public class GameManagerScript : MonoBehaviour
 
     void Start()
     {
+        clearText.SetActive(false);
         map = new int[,]
         {
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 3, 2, 2, 1, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0 },
+           { 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 3 },
+           { 3, 0, 0, 0, 0, 3, 2, 2, 1, 0, 0, 0, 0, 0 },
+           { 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0 },
         };  // 0: 何もない, 1: プレイヤー, 2: 箱
 
         field = new GameObject

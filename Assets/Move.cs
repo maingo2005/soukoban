@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 
+/// <summary>
+/// オブジェクトを滑らかに動かす機能を提供する
+/// </summary>
 public class Move : MonoBehaviour
 {
-    /// <summary>移動までにかかる時間</summary>
+    /// <summary>移動までにかかる時間（秒）</summary>
     public float duration = 0.2f;
+    /// <summary>移動を始めてから経過した時間（秒）</summary>
     float elapsedlTime;
     Vector3 destination;
     Vector3 origin;
@@ -38,8 +42,10 @@ public class Move : MonoBehaviour
         transform.position = currentPosition;
     }
 
-    /// <summary>オブジェクトを滑らかに移動させる</summary>
-    /// <param name="destination">目的地の座標</summary>
+    /// <summary>
+    /// オブジェクトを滑らかに移動させる
+    /// </summary>
+    /// <param name="destination">目的地の座標</param>
     public void MoveTo(Vector3 destination)
     {
         elapsedlTime = 0;
@@ -47,7 +53,5 @@ public class Move : MonoBehaviour
         //移動中だった場合はキャンセルして目的地にワープする
         transform.position = origin;
         this.destination = destination;
-
-        //transform.position = destination;
     }
 }
