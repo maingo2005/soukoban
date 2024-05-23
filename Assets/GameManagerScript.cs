@@ -6,6 +6,10 @@ public class GameManagerScript : MonoBehaviour
 {
     public GameObject playerPrefab;
     public GameObject boxPrefab;
+    /// <summary>荷物を格納する場所のプレハブ</summary>
+    public GameObject storePrefab;
+    /// <summary>クリアーしたことを示すテキストのGameObject</summary>
+    public GameObject clearText;
     int[,] map; // マップの元データ（数字）
     GameObject[,] field;    // map を元にしたオブジェクトの格納庫
 
@@ -67,9 +71,12 @@ public class GameManagerScript : MonoBehaviour
         field[moveTo.y, moveTo.x] = field[moveFrom.y, moveFrom.x];
         field[moveFrom.y, moveFrom.x] = null;
         // オブジェクトのシーン上の座標を動かす
-        field[moveTo.y, moveTo.x].transform.position =
-            new Vector3(moveTo.x, -1 * moveTo.y, 0);
-
+        //field[moveTo.y, moveTo.x].transform.position =
+        //    new Vector3(moveTo.x, -1 * moveTo.y, 0);
+        //プレイヤーor箱のオブジェクトから、Moveコンポーネントをと
+        Move move = field[moveTo.y, moveTo.x].GetComponent<Move>();
+        //Moveコンポーネントに対して、動けと命令する
+        move.MoveTo(new Vector3(moveTo.x, -1 * moveTo.y, 0));
         return true;
     }
 
@@ -122,7 +129,7 @@ public class GameManagerScript : MonoBehaviour
                         new Vector3(x, -1 * y, 0),
                         Quaternion.identity);
                     field[y, x] = instance; // プレイヤーを保存しておく
-                    break;  // プレイヤーは１つだけなので抜ける
+                    //break;  // プレイヤーは１つだけなので抜ける
                 }   // プレイヤーを出す
                 else if (map[y, x] == 2)
                 {
@@ -132,6 +139,12 @@ public class GameManagerScript : MonoBehaviour
                         Quaternion.identity);
                     field[y, x] = instance; // 箱を保存しておく
                 }   // 箱を出す
+                else if (map[y, x] == 3)
+                {
+                    Instantiate(storePrefab,
+                        new Vector3(x, -1 * y, 0),
+                        Quaternion.identity);
+                }   // 格納場所を出す
             }
         }
     }
@@ -144,7 +157,7 @@ public class GameManagerScript : MonoBehaviour
             MoveNumber(playerPosition, new Vector2Int(playerPosition.x + 1, playerPosition.y));    // →に移動
 
             if (IsClear())
-                Debug.Log("Clear");
+                clearText.SetActive(true);
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -153,7 +166,7 @@ public class GameManagerScript : MonoBehaviour
             MoveNumber(playerPosition, new Vector2Int(playerPosition.x - 1, playerPosition.y));    // ←に移動
 
             if (IsClear())
-                Debug.Log("Clear");
+                clearText.SetActive(true);
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -162,7 +175,7 @@ public class GameManagerScript : MonoBehaviour
             MoveNumber(playerPosition, new Vector2Int(playerPosition.x, playerPosition.y - 1));    // ↑に移動
 
             if (IsClear())
-                Debug.Log("Clear");
+                clearText.SetActive(true);
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -171,7 +184,7 @@ public class GameManagerScript : MonoBehaviour
             MoveNumber(playerPosition, new Vector2Int(playerPosition.x, playerPosition.y + 1));    // ↓に移動
 
             if (IsClear())
-                Debug.Log("Clear");
+                clearText.SetActive(true);
         }
     }
 }
