@@ -6,6 +6,8 @@ public class GameManagerScript : MonoBehaviour
 {
     public GameObject playerPrefab;
     public GameObject boxPrefab;
+    /// <summary>動かない壁の GameObject</summary>
+    public GameObject boxStop;
     /// <summary>荷物を格納する場所のプレハブ</summary>
     public GameObject storePrefab;
     /// <summary>クリアーしたことを示すテキストの GameObject</summary>
@@ -53,10 +55,16 @@ public class GameManagerScript : MonoBehaviour
     bool MoveNumber(Vector2Int moveFrom, Vector2Int moveTo)
     {
         // 動けない場合は false を返す
-        if (moveTo.y < 0 || moveTo.y >= field.GetLength(0))
+        if (moveTo.y < 0 || moveTo.y >= field.GetLength(0)/*||moveTo.y > map.GetLength(4)*/)
             return false;
-        if (moveTo.x < 0 || moveTo.x >= field.GetLength(1))
+        if (moveTo.x < 0 || moveTo.x >= field.GetLength(1)/*||moveTo.y > map.GetLength(4)*/)
             return false;
+
+        if (field[moveTo.y, moveTo.x] != null
+            && field[moveTo.y, moveTo.x].tag == "Stop")
+        {
+                return false;
+        }   // 移動先に箱がいた場合の処理
 
         if (field[moveTo.y, moveTo.x] != null
             && field[moveTo.y, moveTo.x].tag == "Box")
@@ -107,12 +115,15 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         clearText.SetActive(false);
+
         map = new int[,]
         {
-           { 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 3 },
-           { 3, 0, 0, 0, 0, 3, 2, 2, 1, 0, 0, 0, 0, 0 },
-           { 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0 },
-        };  // 0: 何もない, 1: プレイヤー, 2: 箱
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+            {4, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 3, 4 },
+            {4, 0, 0, 0, 0, 0, 3, 2, 2, 1, 0, 0, 0, 0, 0, 4 },
+            {4, 3, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 3, 4 },
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+        };  // 0: 何もない, 1: プレイヤー, 2: 箱,3: 格納場所,4: 動かない壁
 
         field = new GameObject
         [
@@ -131,7 +142,7 @@ public class GameManagerScript : MonoBehaviour
                         new Vector3(x, -1 * y, 0),
                         Quaternion.identity);
                     field[y, x] = instance; // プレイヤーを保存しておく
-                    //break;  // プレイヤーは１つだけなので抜ける
+                    // break;  // プレイヤーは１つだけなので抜ける
                 }   // プレイヤーを出す
                 else if (map[y, x] == 2)
                 {
@@ -143,10 +154,18 @@ public class GameManagerScript : MonoBehaviour
                 }   // 箱を出す
                 else if (map[y, x] == 3)
                 {
-                    Instantiate(storePrefab,
+                    GameObject instance =
+                        Instantiate(storePrefab,
                         new Vector3(x, -1 * y, 0),
                         Quaternion.identity);
                 }   // 格納場所を出す
+                else if (map[y, x] == 4)
+                {
+                    GameObject instance =
+                        Instantiate(boxStop,
+                        new Vector3(x, -1 * y, 0),
+                        Quaternion.identity);
+                }   // 壁を出す
             }
         }
     }

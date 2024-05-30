@@ -209,7 +209,7 @@ Transform:
   m_GameObject: {fileID: 1187358978}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7, y: 2, z: -20}
+  m_LocalPosition: {x: 6.04, y: 0.16, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -261,6 +261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1521230805963143869, guid: 65f8e6eba4c961e47bfd8f91e77d2c50, type: 3}
   boxPrefab: {fileID: 3935146412656924263, guid: 9ffb81332ce4ccf4fb607fa74d000faa, type: 3}
+  boxStop: {fileID: 7391355048637698065, guid: e0b03311e77cb354fa89c22d0ff065e9, type: 3}
   storePrefab: {fileID: 7811107127132528521, guid: f7f6008d13882b9458b237136f1845f6, type: 3}
   clearText: {fileID: 1991687419}
 --- !u!1 &1547017736
@@ -561,7 +562,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 33, y: -29}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.49999997, y: 0.5}
 --- !u!114 &1991687421
